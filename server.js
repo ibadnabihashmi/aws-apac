@@ -20,7 +20,7 @@ var app = express();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3005);
 app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -47,7 +47,7 @@ app.get('/test',function (req,res) {
   });
 
   opHelper.execute('BrowseNodeLookup', {
-    BrowseNodeId: 1036592
+    BrowseNodeId: 1036682
   }).then(function (response) {
     res.status(200).send({
       status:200,
