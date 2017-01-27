@@ -17,31 +17,40 @@ var queue = [
 
 async.eachSeries(queue,function (elem,callback) {
   console.log('1');
-  opHelper.execute('BrowseNodeLookup', {
-    BrowseNodeId: elem.BrowseNodeId
-  }).then(function (response) {
-    console.log('2');
-    console.log("....................processing.................. "+elem.Name);
-    fs.writeFile('cats/'+elem.Name+'.json', JSON.stringify(response.result.BrowseNodeLookupResponse.BrowseNodes.BrowseNode.Children,null,2),function (err) {
-      console.log('3');
-      if(err){
-        console.log('err 1');
-        callback(err);
-      }else{
-        console.log('4');
-        var nodes = JSON.parse(fs.readFileSync('cats/'+elem.Name+'.json')).BrowseNode;
-        console.log('5');
-        queue.shift();
-        queue = _.concat(queue,nodes);
-        console.log('6');
-        callback();
-      }
-    });
-  }).catch(function (response) {
-    console.log('err 2');
-    callback(response.err);
+  async.waterfall([
+    function (callback1) {
+      opHelper.execute('BrowseNodeLookup', {
+        BrowseNodeId: elem.BrowseNodeId
+      }).then(function (response) {
+        callback1(null,response);
+      }).catch(function (response) {
+        console.log('err 2');
+        callback(response.err);
+      });
+      console.log('7');
+    },
+    function (response,callback1) {
+      console.log('2');
+      console.log("....................processing.................. "+elem.Name);
+      fs.writeFile('cats/'+elem.Name+'.json', JSON.stringify(response.result.BrowseNodeLookupResponse.BrowseNodes.BrowseNode.Children,null,2),function (err) {
+        console.log('3');
+        if(err){
+          console.log('err 1');
+          callback(err);
+        }else{
+          console.log('4');
+          var nodes = JSON.parse(fs.readFileSync('cats/'+elem.Name+'.json')).BrowseNode;
+          console.log('5');
+          queue.shift();
+          queue = _.concat(queue,nodes);
+          console.log('6');
+          callback();
+        }
+      });
+    }
+  ],function (err,result) {
+    
   });
-  console.log('7');
 },function (err) {
   if(err){
     console.log('notDone');
