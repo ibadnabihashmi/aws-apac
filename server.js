@@ -47,7 +47,7 @@ app.get('/test',function (req,res) {
   });
 
   opHelper.execute('BrowseNodeLookup', {
-    BrowseNodeId: 1036682
+    BrowseNodeId: 2407756011
   }).then(function (response) {
     res.status(200).send({
       status:200,
