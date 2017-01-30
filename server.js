@@ -8,6 +8,7 @@ var flash = require('express-flash');
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var dotenv = require('dotenv');
+var fs = require('fs');
 
 // Load environment variables from .env file
 dotenv.load();
@@ -47,7 +48,7 @@ app.get('/test',function (req,res) {
   });
 
   opHelper.execute('BrowseNodeLookup', {
-    BrowseNodeId: 2407756011
+    BrowseNodeId: 8614941011
   }).then(function (response) {
     res.status(200).send({
       status:200,
@@ -61,6 +62,11 @@ app.get('/test',function (req,res) {
   });
 });
 
+app.get('/count',function (req,res) {
+  var json = JSON.parse(fs.readFileSync('nodes/Cell Phones & Accessories.json'));
+  console.log(json.length);
+  res.send(200);
+});
 // Production error handler
 if (app.get('env') === 'production') {
   app.use(function(err, req, res, next) {
