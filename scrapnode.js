@@ -2,11 +2,7 @@ var async               = require('async');
 var _                   = require('lodash');
 var fs                  = require('fs');
 var OperationHelper     = require('apac').OperationHelper;
-var opHelper            = new OperationHelper({
-    awsId:     'AKIAIOHILJDN5U7NCUFA',
-    awsSecret: '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',
-    assocId:   'keevaorganics-20'
-});
+
 
 var queue = [
     {
