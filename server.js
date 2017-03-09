@@ -41,11 +41,7 @@ app.get('/getTest',function (req,res) {
 app.get('/test',function (req,res) {
   var OperationHelper = require('apac').OperationHelper;
 
-  var opHelper = new OperationHelper({
-    awsId:     'AKIAIOHILJDN5U7NCUFA',
-    awsSecret: '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',
-    assocId:   'keevaorganics-20'
-  });
+  
 
   opHelper.execute('BrowseNodeLookup', {
     BrowseNodeId: 8614941011
